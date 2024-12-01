@@ -218,7 +218,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
-import { AnimatedModalDemo } from "../components/Model.tsx";
+import { AnimatedModalDemo } from "../components/Modal";
 
 interface Ball {
   id: string;
@@ -318,7 +318,7 @@ const BallGame: React.FC = () => {
           // Check if collision is with a popup-triggering obstacle
           for (const popupObstacle of popUpTriggerObstacle) {
             if (isColliding(ballRect, popupObstacle)) {
-
+              <AnimatedModalDemo />
             }
           }
           return prevPos; // Stop movement
