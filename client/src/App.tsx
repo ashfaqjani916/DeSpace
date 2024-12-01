@@ -1,5 +1,6 @@
 import AgoraUIKit from 'agora-react-uikit';
 import BallGame from './area/ChatComponent';
+import Home from './pages/Home';
 
 const App = () => {
   const rtcProps = {
@@ -33,7 +34,8 @@ const App = () => {
 
         {/* Ball Game Section */}
         <div className="col-span-4">
-          <BallGame />
+          {/* <BallGame /> */}
+          <Home />
         </div>
       </div>
     </div>
