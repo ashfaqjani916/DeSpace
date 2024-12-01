@@ -7,16 +7,17 @@ import { MediasoupService } from './mediasoup/mediasoup.service';
 import { MediasoupGateway } from './mediasoup/mediasoup.gateway';
 import { OktoApiModule } from './okto-api/okto-api.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PersonsService } from './persons/persons.service';
+import { PersonService } from './persons/persons.service';
+import { PersonModule } from './persons/persons.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://lokeshnagasaid:vz8bsAYmp2q5hg5r@undefined/?replicaSet=atlas-pyn6b1-shard-0&ssl=true&authSource=admin', {
+    MongooseModule.forRoot('mongodb+srv://rishidha04:CUqLIc34NGNqvr5i@cluster0.8edre.mongodb.net/', {
 
     }),
-    ChatModule, SignalingModule, OktoApiModule],
+    ChatModule, SignalingModule, OktoApiModule, PersonModule],
   controllers: [AppController],
-  providers: [AppService, MediasoupService, MediasoupGateway, PersonsService],
+  providers: [AppService, MediasoupService, MediasoupGateway, PersonService],
 })
 export class AppModule { }
 
