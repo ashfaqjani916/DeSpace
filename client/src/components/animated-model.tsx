@@ -60,8 +60,10 @@ export const ModalTrigger = ({
 };
 
 export const ModalBody = ({
+  children,
   className,
 }: {
+  children: ReactNode;
   className?: string;
 }) => {
   const { open } = useModal();
@@ -95,7 +97,7 @@ export const ModalBody = ({
           }}
           className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full  flex items-center justify-center z-50"
         >
-          <Overlay />
+          <Overlay className="" />
 
           <motion.div
             ref={modalRef}
@@ -126,16 +128,44 @@ export const ModalBody = ({
               damping: 15,
             }}
           >
-            <button
-              onClick={() => setOpen(false)}
-              className="px-4 py-2 rounded-md text-black dark:text-white text-center relative overflow-hidden"
-            >
-              Close
-            </button>
+            {children}
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
+  );
+};
+
+export const ModalContent = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div className={cn("flex flex-col flex-1 p-8 md:p-10", className)}>
+      {children}
+    </div>
+  );
+};
+
+export const ModalFooter = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div
+      className={cn(
+        "flex justify-end p-4 bg-gray-100 dark:bg-neutral-900",
+        className
+      )}
+    >
+      {children}
+    </div>
   );
 };
 
@@ -158,16 +188,15 @@ const Overlay = ({ className }: { className?: string }) => {
   );
 };
 
-// Hook to detect clicks outside of a component.
-// Add it in a separate file, I've added here for simplicity
+// Hook to detect clicks outside of a component
 export const useOutsideClick = (
   ref: React.RefObject<HTMLDivElement>,
   callback: Function
 ) => {
   useEffect(() => {
-    const listener = (event: any) => {
+    const listener = (event: MouseEvent | TouchEvent) => {
       // DO NOTHING if the element being clicked is the target element or their children
-      if (!ref.current || ref.current.contains(event.target)) {
+      if (!ref.current || ref.current.contains(event.target as Node)) {
         return;
       }
       callback(event);
