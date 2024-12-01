@@ -154,9 +154,14 @@ export class OktoApiService {
       ]
     }
     await this.executeTransaction(auth_token, transactions);
-    const users = await this.personService.getPersonCount();
+    const users = await this.personService.getAll();
+    const count = users.length;
     const APTOS_WALLET_ADDRESS = await this.getWalletAddress(auth_token);
-    const user = await this.personService.createPerson({ person_id: users + 1, address: APTOS_WALLET_ADDRESS });
+    const user = await this.personService.create({
+      person_id: count, name: person_name, address: APTOS_WALLET_ADDRESS,
+      meeting_ids: [],
+      game_history: []
+    });
     return user;
   }
 
@@ -317,7 +322,7 @@ export class OktoApiService {
 
 
   async getAllPersons() {
-    return await this.personService.getAllPersons();
+    return await this.personService.getAll();
   }
 
 }

@@ -1,11 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PersonService } from './persons.service';
 
-<<<<<<< HEAD
-describe('PersonsService', () => {
-=======
 describe('PersonService', () => {
->>>>>>> abdf584 (resolved errors related to mongoose)
   let service: PersonService;
 
   beforeEach(async () => {
