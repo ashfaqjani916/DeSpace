@@ -8,15 +8,17 @@ interface Ball {
 }
 
 const BallGame: React.FC = () => {
-  let socket: Socket;
+  const socketRef = useRef<Socket | null>(null);
   const [imageUrl, setImageUrl] = useState<string>('');
   const [ballPosition, setBallPosition] = useState({ x: 200, y: 200 });
   const [balls, setBalls] = useState<Ball[]>([]);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const SOCKET_URL = 'http://localhost:3001';
-    socket = io(SOCKET_URL, { transports: ['websocket'] });
+    const socket = io(SOCKET_URL, { transports: ['websocket'] });
+    socketRef.current = socket;
 
     socket.on('connect', () => {
       console.log('Connected to WebSocket server');
@@ -43,13 +45,14 @@ const BallGame: React.FC = () => {
       const newY = prevPos.y + dy;
       const newPos = { x: newX, y: newY };
 
-      if (socket) {
-        socket.emit('moveBall', { id: socket.id, position: newPos });
+      if (socketRef.current) {
+        socketRef.current.emit('moveBall', { id: socketRef.current.id, position: newPos });
       }
       console.log("moving ball");
       return newPos;
     });
   };
+
   const handleKeyDown = (e: KeyboardEvent) => {
     console.log("Event")
     switch (e.key) {
@@ -72,6 +75,22 @@ const BallGame: React.FC = () => {
       case 'd':
       case 'D':
         moveBall(10, 0);
+        break;
+      case 'q':
+      case 'Q':
+        moveBall(-10, -10);
+        break;
+      case 'e':
+      case 'E':
+        moveBall(10, -10);
+        break;
+      case 'z':
+      case 'Z':
+        moveBall(-10, 10);
+        break;
+      case 'c':
+      case 'C':
+        moveBall(10, 10);
         break;
       default:
         break;
@@ -169,7 +188,7 @@ const BallGame: React.FC = () => {
             display: 'block',
           }}
         ></canvas>
-        <div>Move the ball with arrow keys or WSAD keys!</div>
+        <div>Move the ball with arrow keys, WSAD keys, or QEZC keys for diagonal movement!</div>
       </div>
     </div>
   );
