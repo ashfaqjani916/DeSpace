@@ -62,14 +62,14 @@ export class OktoApiController {
     }
   }
 
-  @Post('/get-personList')
+  @Post('/get-persons')
   async getPersonList(@Body('auth_token') authToken: string): Promise<any> {
     if (!authToken) {
       return { error: 'auth_token is required' };
     }
 
     try {
-      const response = await this.oktoApiService.getPersonList(authToken);
+      const response = await this.oktoApiService.getPersonDetails(authToken);
       return response;
     } catch (error) {
       return { error: error.message };
@@ -90,5 +90,17 @@ export class OktoApiController {
     }
   }
 
+  @Post('/create-meeting')
+  async createMeeting(@Body('auth_token') authToken: string): Promise<any> {
+    if (!authToken) {
+      return { error: 'auth_token is required' };
+    }
 
+    try {
+      const response = await this.oktoApiService.createMeeting(authToken);
+      return response;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
 }

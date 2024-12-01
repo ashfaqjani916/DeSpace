@@ -1,16 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
+import { PersonService } from 'src/persons/persons.service';
 
 const aptosConfig = new AptosConfig({ network: Network.TESTNET });
 const aptos = new Aptos(aptosConfig);
 
+
+interface GameHistory {
+  result: string;
+}
+
+interface Person {
+  person_id: number; // Corresponds to u64
+  name: string;
+  attendance_count: number; // Corresponds to u64
+  meeting_ids: number[]; // Corresponds to vector<u64>
+  game_history: GameHistory[]; // Corresponds to vector<GameHistory>
+  address: string; // Corresponds to address
+}
+
+
+
 @Injectable()
 export class OktoApiService {
+  constructor(private readonly personService: PersonService) { }
   private readonly API_URL = 'https://sandbox-api.okto.tech/api/v2/';
   private readonly API_KEY = 'e987fc5b-e39b-4516-b9de-dc419f545684';
-  private readonly CONTRACT_ADDRESS = "0x5b3eff8ec600a819a94ab5ae27c2d8cfd1dbc0f58aca6e31c9d5455d3ec6c090::meeting_room_game";
+  private readonly CONTRACT_ADDRESS = "0x5b3eff8ec600a819a94ab5ae27c2d8cfd1dbc0f58aca6e31c9d5455d3ec6c090::meeting_room_game2";
   private readonly DEPLOYED_WALLET_ADDRESS = "0x5b3eff8ec600a819a94ab5ae27c2d8cfd1dbc0f58aca6e31c9d5455d3ec6c090";
+
   async authenticate(idToken: string): Promise<any> {
     try {
       const api_endpoint = `${this.API_URL}/authenticate`;
@@ -76,9 +95,8 @@ export class OktoApiService {
         throw new Error('Unable to retrieve wallet address');
       }
 
-      const response = await axios.get(`https://api.testnet.aptoslabs.com/v1/accounts/0x5dd5066656f2cc4883668332844fb39a23c2ae8d37e18a6a2756e6cf792423ba/resource/${this.CONTRACT_ADDRESS}::PersonList`)
+      const response = await axios.get(`https://api.testnet.aptoslabs.com/v1/accounts/${APTOS_WALLET_ADDRESS}/resource/${this.CONTRACT_ADDRESS}::PersonList`)
 
-      console.log('Person List Resource:', response.data);
       return response.data;
 
     } catch (error) {
@@ -86,7 +104,6 @@ export class OktoApiService {
       throw new Error('Failed to retrieve Person List');
     }
   }
-
 
   async getWalletAddress(auth_token: string): Promise<string | null> {
     try {
@@ -111,7 +128,6 @@ export class OktoApiService {
     }
   }
 
-
   async createPersonList(auth_token: string): Promise<any> {
     // const APTOS_WALLET_ADDRESS = this.getWalletAddress(auth_token);
     const transactions = {
@@ -124,7 +140,6 @@ export class OktoApiService {
       ]
     }
     const txnResponse = await this.executeTransaction(auth_token, transactions);
-    console.log(txnResponse);
     return txnResponse;
   }
 
@@ -138,9 +153,11 @@ export class OktoApiService {
         }
       ]
     }
-    const txnResponse = await this.executeTransaction(auth_token, transactions);
-    console.log(txnResponse);
-    return txnResponse;
+    await this.executeTransaction(auth_token, transactions);
+    const users = await this.personService.getPersonCount();
+    const APTOS_WALLET_ADDRESS = await this.getWalletAddress(auth_token);
+    const user = await this.personService.createPerson({ person_id: users + 1, address: APTOS_WALLET_ADDRESS });
+    return user;
   }
 
   async executeTransaction(authToken: string, transactionData: any): Promise<any> {
@@ -166,4 +183,141 @@ export class OktoApiService {
       throw new Error('Transaction execution failed');
     }
   }
+
+  async getPersonDetails(auth_token: string): Promise<any> {
+    const person_list = await this.getPersonList(auth_token);
+    const data = person_list.data;
+    const numberOfPeople = data.person_counter;
+    const personHandle = data.persons.handle;
+
+    let persons = [];
+    let counter = 1;
+    while (counter <= numberOfPeople) {
+      const tableItem = {
+        key_type: "u64",
+        value_type: `${this.CONTRACT_ADDRESS}::Person`,
+        key: `${counter}`,
+      };
+      const person = await aptos.getTableItem<Person>({ handle: personHandle, data: tableItem });
+      persons.push(person);
+      counter++;
+    }
+
+    return persons;
+  }
+
+  async createMeeting(auth_token: string): Promise<any> {
+    try {
+      const persons = await this.getPersonDetails(auth_token);
+      const APTOS_WALLET_ADDRESS = await this.getWalletAddress(auth_token);
+
+      let creator_id;
+      for (const person of persons) {
+        if (person.address === APTOS_WALLET_ADDRESS.toString()) {
+          creator_id = person.person_id;
+          break;
+        }
+      }
+
+      if (!creator_id) {
+        throw new Error("Creator ID not found for the wallet address.");
+      }
+
+      const currentDate = new Date().toISOString();
+
+      const transactions = {
+        transactions: [
+          {
+            function: `${this.CONTRACT_ADDRESS}::create_meeting`,
+            typeArguments: [],
+            functionArguments: [creator_id, currentDate],
+          },
+        ],
+      };
+
+      const response = await this.executeTransaction(auth_token, transactions);
+      return response;
+    } catch (error) {
+      console.error("Error creating meeting:", error);
+      throw error;
+    }
+  }
+
+  async joinMeeting(auth_token: string, meeting_id: string): Promise<any> {
+    try {
+      const persons = await this.getPersonDetails(auth_token);
+      const APTOS_WALLET_ADDRESS = await this.getWalletAddress(auth_token);
+
+      let creator_id;
+      for (const person of persons) {
+        if (person.address === APTOS_WALLET_ADDRESS.toString()) {
+          creator_id = person.person_id;
+          break;
+        }
+      }
+
+      if (!creator_id) {
+        throw new Error("Creator ID not found for the wallet address.");
+      }
+
+      const currentDate = new Date().toISOString();
+
+      const transactions = {
+        transactions: [
+          {
+            function: `${this.CONTRACT_ADDRESS}::join_meeting`,
+            typeArguments: [],
+            functionArguments: [creator_id, meeting_id],
+          },
+        ],
+      };
+
+      const response = await this.executeTransaction(auth_token, transactions);
+      return response;
+    } catch (error) {
+      console.error("Error creating meeting:", error);
+      throw error;
+    }
+  }
+
+  async playSpinWheel(auth_token: string, booth_name: string, rank: number): Promise<any> {
+    const persons = await this.getPersonDetails(auth_token);
+
+    const APTOS_WALLET_ADDRESS = await this.getWalletAddress(auth_token);
+
+    let person_id: string | undefined;
+    for (const person of persons) {
+      if (person.address === APTOS_WALLET_ADDRESS.toString()) {
+        person_id = person.person_id;
+        break;
+      }
+    }
+
+    if (!person_id) {
+      throw new Error("Creator ID not found for the wallet address.");
+    }
+
+    const currentDate = new Date().toISOString();
+    const token_string = `${booth_name}-${rank}-${currentDate}`;
+
+    const transactions = {
+      transactions: [
+        {
+          function: `${this.CONTRACT_ADDRESS}::play_spin_wheel`,
+          typeArguments: [],
+          functionArguments: [person_id, token_string],
+        },
+      ],
+    };
+
+    const response = await this.executeTransaction(auth_token, transactions);
+
+    return response;
+  }
+
+
+  async getAllPersons() {
+    return await this.personService.getAllPersons();
+  }
+
 }
