@@ -1,5 +1,9 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AgoraUIKit from 'agora-react-uikit';
 import BallGame from './area/ChatComponent';
+import Home from './pages/Home';
+import Login from './pages/Login'; // Import the Login component
 
 const App = () => {
   const rtcProps = {
@@ -24,19 +28,30 @@ const App = () => {
   };
 
   return (
-    <div className="flex justify-center items-center ">
-      <div className="grid grid-cols-5  w-full">
-        {/* Agora Video Call Section */}
-        <div className="col-span-1">
-          <AgoraUIKit styleProps={styleProps} rtcProps={rtcProps} />
-        </div>
+    <Router>
+      <Routes>
+        {/* Login Route */}
+        <Route path="/" element={<Login />} />
+        {/* Home Route */}
+        <Route
+          path="/home"
+          element={
+            <div className="flex justify-center items-center">
+              <div className="grid grid-cols-5 w-full">
+                <div className="col-span-1">
+                  <AgoraUIKit styleProps={styleProps} rtcProps={rtcProps} />
+                </div>
 
-        {/* Ball Game Section */}
-        <div className="col-span-4">
-          <BallGame />
-        </div>
-      </div>
-    </div>
+                <div className="col-span-4">
+                  <BallGame />
+                  <Home />
+                </div>
+              </div>
+            </div>
+          }
+        />
+      </Routes>
+    </Router>
   );
 };
 
