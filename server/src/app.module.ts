@@ -14,13 +14,14 @@ import { Huddle01roomService } from './huddle01room/huddle01room.service';
 import { Huddle01roomController } from './huddle01room/huddle01room.controller';
 import { OktoApiController } from './okto-api/okto-api.controller';
 import { OktoApiService } from './okto-api/okto-api.service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb+srv://rishidha04:CUqLIc34NGNqvr5i@cluster0.8edre.mongodb.net/', {
 
     }),
-    ChatModule, SignalingModule, OktoApiModule, PersonModule, Huddle01roomModule],
+    ChatModule, SignalingModule, OktoApiModule, PersonModule, Huddle01roomModule, ScheduleModule.forRoot()],
   controllers: [AppController, Huddle01roomController, OktoApiController],
   providers: [AppService, MediasoupService, MediasoupGateway, PersonService, Huddle01roomService, OktoApiService],
 })
