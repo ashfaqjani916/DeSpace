@@ -4,7 +4,6 @@ import AgoraUIKit from "agora-react-uikit";
 import BallGame from "./area/ChatComponent";
 import Home from "./pages/Home";
 import LandingPage from "./pages/LandingPage";
-import Login from "./pages/Login"; // Import the Login component
 import VideoCall from "./components/VideoCall";
 
 const App = () => {
@@ -34,7 +33,7 @@ const App = () => {
 		<Router>
 			<Routes>
 				{/* Login Route */}
-				<Route path='/' element={<Login />} />
+				<Route path='/' element={<LandingPage />} />
 				{/* Home Route */}
 				<Route
 					path='/home'
