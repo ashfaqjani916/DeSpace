@@ -4,6 +4,7 @@ import AgoraUIKit from 'agora-react-uikit';
 import BallGame from './area/ChatComponent';
 import Home from './pages/Home';
 import Login from './pages/Login'; // Import the Login component
+import VideoCall from './components/VideoCall';
 
 const App = () => {
   const rtcProps = {
@@ -39,7 +40,7 @@ const App = () => {
             <div className="flex justify-center items-center">
               <div className="grid grid-cols-5 w-full">
                 <div className="col-span-1">
-                  <AgoraUIKit styleProps={styleProps} rtcProps={rtcProps} />
+                  <VideoCall />
                 </div>
 
                 <div className="col-span-4">
