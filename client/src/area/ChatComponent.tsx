@@ -216,6 +216,7 @@
 // export default BallGame;
 
 
+import SpinnerModal from "@/components/SpinningWheel";
 import React, { useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -262,9 +263,9 @@ const BallGame: React.FC = () => {
   ];
 
   const popUpTriggerObstacle = [
-    { x: 40, y: 695, width: 140, height: 120 }, 
-    { x: 250, y: 695, width: 140, height: 20 }, 
-    { x: 450, y: 695, width: 140, height: 20}, 
+    { x: 40, y: 695, width: 140, height: 120 },
+    { x: 250, y: 695, width: 140, height: 20 },
+    { x: 450, y: 695, width: 140, height: 20 },
     { x: 650, y: 695, width: 140, height: 20 }
   ];
 
@@ -314,15 +315,15 @@ const BallGame: React.FC = () => {
 
       for (const obstacle of obstacles) {
         if (isColliding(ballRect, obstacle)) {
-        // Check if collision is with a popup-triggering obstacle
-        for (const popupObstacle of popUpTriggerObstacle) {
-          if (isColliding(ballRect, popupObstacle)) {
-            alert("Collision detected with a special obstacle!");
+          // Check if collision is with a popup-triggering obstacle
+          for (const popupObstacle of popUpTriggerObstacle) {
+            if (isColliding(ballRect, popupObstacle)) {
+              alert("Collision detected with a special obstacle!");
+            }
           }
+          return prevPos; // Stop movement
         }
-        return prevPos; // Stop movement
       }
-    }
 
 
       if (socketRef.current) {
@@ -410,6 +411,7 @@ const BallGame: React.FC = () => {
 
   return (
     <div className="ball-game" style={{ display: "flex" }}>
+      <SpinnerModal />
       <div
         style={{
           width: "200px",
