@@ -12,6 +12,8 @@ import { PersonModule } from './persons/persons.module';
 import { Huddle01roomModule } from './huddle01room/huddle01room.module';
 import { Huddle01roomService } from './huddle01room/huddle01room.service';
 import { Huddle01roomController } from './huddle01room/huddle01room.controller';
+import { OktoApiController } from './okto-api/okto-api.controller';
+import { OktoApiService } from './okto-api/okto-api.service';
 
 @Module({
   imports: [
@@ -19,8 +21,8 @@ import { Huddle01roomController } from './huddle01room/huddle01room.controller';
 
     }),
     ChatModule, SignalingModule, OktoApiModule, PersonModule, Huddle01roomModule],
-  controllers: [AppController, Huddle01roomController],
-  providers: [AppService, MediasoupService, MediasoupGateway, PersonService, Huddle01roomService],
+  controllers: [AppController, Huddle01roomController, OktoApiController],
+  providers: [AppService, MediasoupService, MediasoupGateway, PersonService, Huddle01roomService, OktoApiService],
 })
 export class AppModule { }
 

@@ -15,9 +15,16 @@ export class PersonService {
 
   // Create a new person
   async create(createPersonDto: CreatePersonDto): Promise<Person> {
+    const existerUser = await this.personModel.findOne({ address: createPersonDto.address });
+
+    if (existerUser) {
+      return null;
+    }
+
     const createdPerson = new this.personModel(createPersonDto);
     return createdPerson.save();
   }
+
 
   async getAll() {
     const users = await this.personModel.find({});

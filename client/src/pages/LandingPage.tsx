@@ -110,7 +110,7 @@ const LandingPage: React.FC = () => {
 			}
 
 			const data: any = await response.json();
-			
+
 
 			if (data.data.auth_token) {
 				console.log("Authentication successful");
@@ -190,7 +190,15 @@ const LandingPage: React.FC = () => {
 					</div>
 				</nav>
 
-				<main className='container mx-auto px-4 py-20 text-center'>
+				<main className='container mx-auto px-4 py-20 text-center'
+				>
+					{/* <div
+						className='absolute inset-0 bg-black opacity-50'
+						style={{
+							backgroundImage: "url('preview2.png')",
+							backgroundSize: 'cover',
+						}}
+					></div> */}
 					<h1 className='text-4xl md:text-9xl font-bold mb-6 leading-tight'>
 						DE-SPACE
 						<br />
@@ -210,66 +218,6 @@ const LandingPage: React.FC = () => {
 					</div>
 				</main>
 
-				<section className='w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]'>
-					<ul className='flex items-center justify-center md:justify-start mx-auto gap-8 animate-infinite-scroll'>
-						<li>
-							<img
-								src='https://cruip-tutorials.vercel.app/logo-carousel/facebook.svg'
-								alt='Facebook'
-								className='max-w-none'
-							/>
-						</li>
-						<li>
-							<img
-								src='https://cruip-tutorials.vercel.app/logo-carousel/disney.svg'
-								alt='Disney'
-								className='max-w-none'
-							/>
-						</li>
-						<li>
-							<img
-								src='https://cruip-tutorials.vercel.app/logo-carousel/airbnb.svg'
-								alt='Airbnb'
-								className='max-w-none'
-							/>
-						</li>
-						<li>
-							<img
-								src='https://cruip-tutorials.vercel.app/logo-carousel/apple.svg'
-								alt='Apple'
-								className='max-w-none'
-							/>
-						</li>
-						<li>
-							<img
-								src='https://cruip-tutorials.vercel.app/logo-carousel/spark.svg'
-								alt='Spark'
-								className='max-w-none'
-							/>
-						</li>
-						<li>
-							<img
-								src='https://cruip-tutorials.vercel.app/logo-carousel/samsung.svg'
-								alt='Samsung'
-								className='max-w-none'
-							/>
-						</li>
-						<li>
-							<img
-								src='https://cruip-tutorials.vercel.app/logo-carousel/quora.svg'
-								alt='Quora'
-								className='max-w-none'
-							/>
-						</li>
-						<li>
-							<img
-								src='https://cruip-tutorials.vercel.app/logo-carousel/sass.svg'
-								alt='Sass'
-								className='max-w-none'
-							/>
-						</li>
-					</ul>
-				</section>
 			</div>
 
 			<div className='min-h-screen bg-black'>

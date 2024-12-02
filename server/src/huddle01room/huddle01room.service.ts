@@ -1,13 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import axios from "axios";
 import { AccessToken, Role } from "@huddle01/server-sdk/auth";
+import { OktoApiService } from "src/okto-api/okto-api.service";
 
 @Injectable()
 export class Huddle01roomService {
+  constructor(private readonly oktoService: OktoApiService) { }
   private readonly API_URL = "https://api.huddle01.com/api/v1/create-room";
   private readonly API_KEY = "ak_8XPQWt1zvMQSTiP8";
 
-  async createRoom(room_name: string): Promise<any> {
+  async createRoom(room_name: string, auth_token: string): Promise<any> {
     try {
       const response = await axios.post(
         this.API_URL,
@@ -19,6 +21,7 @@ export class Huddle01roomService {
           },
         }
       );
+      await this.oktoService.createMeeting(auth_token);
       return response.data;
     } catch (error) {
       console.error(

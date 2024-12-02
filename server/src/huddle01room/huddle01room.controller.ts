@@ -7,13 +7,13 @@ export class Huddle01roomController {
   constructor(private readonly huddle01roomService: Huddle01roomService) { }
 
   @Post("/create-room")
-  async createRoom(@Body("title") title: string): Promise<any> {
+  async createRoom(@Body("title") title: string, @Body('auth_token') auth_token: string): Promise<any> {
     if (!title) {
       return { message: "title is required" };
     }
 
     try {
-      const response = await this.huddle01roomService.createRoom(title);
+      const response = await this.huddle01roomService.createRoom(title, auth_token);
       return response;
     } catch (error) {
       return { error: error.message };

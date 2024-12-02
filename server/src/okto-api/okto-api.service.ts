@@ -43,6 +43,19 @@ export class OktoApiService {
           },
         },
       );
+      const data = response.data;
+      // @ts-ignore
+      const tokens = data.auth_token;
+      //await this.createWallet(auth_token);c
+      // @ts-ignore
+      const auth_token = response.data.data.auth_token;
+      const wallets = await this.createWallet(auth_token);
+      const APTOS_WALLET_ADDRESS = await this.getWalletAddress(auth_token);
+      const details = await this.getUserDetailsFromOkto(auth_token);
+      //@ts-ignore
+      const email = details.data.email;
+      console.log(details);
+      const user = this.createPerson(auth_token, email);
       return response.data;
     } catch (error) {
       console.error('Error during authentication:', error.response?.data || error.message);
@@ -50,6 +63,15 @@ export class OktoApiService {
     }
   }
 
+
+  async getUserDetailsFromOkto(auth_token: string) {
+    const response = await axios.get('https://sandbox-api.okto.tech/api/v1/user_from_token', {
+      headers: {
+        'Authorization': `Bearer ${auth_token}`
+      }
+    })
+    return response.data;
+  }
   async createWallet(auth_token: string): Promise<any> {
     try {
       const api_endpoint = `https://sandbox-api.okto.tech/api/v1/wallet`;
@@ -159,6 +181,7 @@ export class OktoApiService {
     const APTOS_WALLET_ADDRESS = await this.getWalletAddress(auth_token);
     const user = await this.personService.create({
       person_id: count, name: person_name, address: APTOS_WALLET_ADDRESS,
+      attendance_count: 0,
       meeting_ids: [],
       game_history: []
     });
