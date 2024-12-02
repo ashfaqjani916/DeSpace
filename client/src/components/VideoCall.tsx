@@ -8,6 +8,24 @@ import {
 } from "@huddle01/react/hooks";
 import { Audio, Video } from "@huddle01/react/components";
 import axios from "axios";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
+import { Button } from "./ui/button";
+import {
+  Video as VideoIcon,
+  VideoOff,
+  Mic,
+  MicOff,
+  Share2,
+  StopCircle,
+  LogIn,
+  LogOut,
+  PlusCircle
+} from "lucide-react";
 
 const RemotePeer = ({ peerId }: any) => {
   const { stream: videoStream } = useRemoteVideo({ peerId });
@@ -94,141 +112,130 @@ const VideoCall = () => {
   console.log(peerIds)
 
   return (
-    <div style={{ padding: "20px" }}>
-      {/* Room Management */}
-      <div>
-        <button
-          style={{
-            marginBottom: "10px",
-            padding: "10px 20px",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            fontSize: "16px",
-            cursor: "pointer",
-            width: "200px",
-          }}
-          onClick={fetchRoomAndToken}
-        >
-          Create Room & Get Token
-        </button>
-      </div>
-      <div>
-        <button
-          style={{
-            marginBottom: "10px",
-            padding: "10px 20px",
-            backgroundColor: "#28a745",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            fontSize: "16px",
-            cursor: "pointer",
-            width: "200px",
-          }}
-          onClick={handleJoinRoom}
-        >
-          Join Room
-        </button>
-      </div>
-      <div>
-        <button
-          style={{
-            marginBottom: "10px",
-            padding: "10px 20px",
-            backgroundColor: "#dc3545",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            fontSize: "16px",
-            cursor: "pointer",
-            width: "200px",
-          }}
-          onClick={leaveRoom}
-        >
-          Leave Room
-        </button>
-      </div>
+    <TooltipProvider>
+      <div className="p-5 space-y-4">
 
-      {/* Local Media Controls */}
-      <div>
-        {/* Webcam */}
-        <button
-          style={{
-            marginBottom: "10px",
-            padding: "10px 20px",
-            backgroundColor: isVideoOn ? "#ffc107" : "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            fontSize: "16px",
-            cursor: "pointer",
-            width: "200px",
-          }}
-          onClick={() => (isVideoOn ? disableVideo() : enableVideo())}
-        >
-          {isVideoOn ? "Stop Video" : "Start Video"}
-        </button>
 
-        {/* Mic */}
-        <button
-          style={{
-            marginBottom: "10px",
-            padding: "10px 20px",
-            backgroundColor: isAudioOn ? "#28a745" : "#dc3545",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            fontSize: "16px",
-            cursor: "pointer",
-            width: "200px",
-          }}
-          onClick={() => (isAudioOn ? disableAudio() : enableAudio())}
-        >
-          {isAudioOn ? "Mute Audio" : "Unmute Audio"}
-        </button>
 
-        {/* Screen Share */}
-        <button
-          style={{
-            marginBottom: "10px",
-            padding: "10px 20px",
-            backgroundColor: shareStream ? "#dc3545" : "#ffc107",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            fontSize: "16px",
-            cursor: "pointer",
-            width: "200px",
-          }}
-          onClick={() => (shareStream ? stopScreenShare() : startScreenShare())}
-        >
-          {shareStream ? "Stop Screen Share" : "Start Screen Share"}
-        </button>
-      </div>
-
-      {/* Video Grid */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-        {/* Local Video */}
-        {videoStream && (
-          <div className='w-full'>
-            <div className='p-2'>
+        <div className="fixed bottom-2 right-2 w-full max-w-xs">
+          <div className="p-2 m-3 bg-gray-800 rounded-lg shadow-lg">
+            {videoStream && (<>
               <Video
                 stream={videoStream}
-                className='w-full h-48 object-cover rounded-lg'
+                className="w-full h-48 object-cover rounded-lg"
               />
-              <p className='text-sm text-center mt-2'>You</p>
-            </div>
-          </div>
-        )}
+              <p className="text-sm text-center mt-2 text-white">You</p>
+            </>)}
 
-        {/* Remote Peers */}
-        {peerIds.map((peerId) => (
-          <RemotePeer key={peerId} peerId={peerId} />
-        ))}
+          </div>
+          <div className="flex gap-4 justify-center">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={fetchRoomAndToken}
+                >
+                  <PlusCircle className="h-5 w-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Create Room & Get Token</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={handleJoinRoom}
+                >
+                  <LogIn className="h-5 w-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Join Room</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={leaveRoom}
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Leave Room</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={isVideoOn ? "destructive" : "default"}
+                  size="icon"
+                  onClick={() => (isVideoOn ? disableVideo() : enableVideo())}
+                >
+                  {isVideoOn ? (
+                    <VideoOff className="h-5 w-5" />
+                  ) : (
+                    <VideoIcon className="h-5 w-5" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {isVideoOn ? "Stop Video" : "Start Video"}
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={isAudioOn ? "destructive" : "default"}
+                  size="icon"
+                  onClick={() => (isAudioOn ? disableAudio() : enableAudio())}
+                >
+                  {isAudioOn ? (
+                    <MicOff className="h-5 w-5" />
+                  ) : (
+                    <Mic className="h-5 w-5" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {isAudioOn ? "Mute Audio" : "Unmute Audio"}
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={shareStream ? "destructive" : "default"}
+                  size="icon"
+                  onClick={() => (shareStream ? stopScreenShare() : startScreenShare())}
+                >
+                  {shareStream ? (
+                    <StopCircle className="h-5 w-5" />
+                  ) : (
+                    <Share2 className="h-5 w-5" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {shareStream ? "Stop Screen Share" : "Start Screen Share"}
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </div>
+
+
+        {/* Video Grid */}
+        <div className='flex items-center flex-col gap-2'>
+          {peerIds.map((peerId) => (
+            <RemotePeer className="h-48 w-64" key={peerId} peerId={peerId} />
+          ))}
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 };
 
