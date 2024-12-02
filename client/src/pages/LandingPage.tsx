@@ -128,11 +128,11 @@ const LandingPage: React.FC = () => {
 		}
 	};
 
-	const handleLogout = () => {
-		localStorage.removeItem("okto_auth_token");
-		setAuthToken("");
-		navigate("/");
-	};
+	// const handleLogout = () => {
+	// 	localStorage.removeItem("okto_auth_token");
+	// 	setAuthToken("");
+	// 	navigate("/");
+	// };
 
 	return (
 		<div>
@@ -174,10 +174,10 @@ const LandingPage: React.FC = () => {
 									{error && <p className='text-red-500 mt-2'>{error}</p>}
 								</div>
 							) : (
-									<div>
-										
+								<div>
+
 									<p>You are currently logged in</p>
-									
+
 								</div>
 							)}
 						</div>

@@ -27,6 +27,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [peerConnections, setPeerConnections] = useState<{ [id: string]: RTCPeerConnection }>({});
   const [remoteStreams, setRemoteStreams] = useState<{ [id: string]: MediaStream }>({});
   const [roomId, setRoomId] = useState<string>('');
+  console.log(roomId);
   const iceServers = {
     iceServers: [
       { urls: 'stun:stun1.l.google.com:19302' },

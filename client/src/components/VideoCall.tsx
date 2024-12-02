@@ -64,6 +64,7 @@ const VideoCall = () => {
     isVideoOn,
   } = useLocalVideo();
   const {
+    //@ts-ignore
     stream: audioStream,
     enableAudio,
     disableAudio,

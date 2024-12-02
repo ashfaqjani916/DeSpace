@@ -8,7 +8,7 @@ import {
   usePublish,
   useRemoteUsers,
 } from "agora-rtc-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 // import "./styles.css";
 // import logo from "./logo.png";

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useRef, CSSProperties } from 'react';
+import React, { useState, useRef } from 'react';
 
 // Define a type for the wheel options
 interface WheelOption {
@@ -20,7 +20,7 @@ const WheelSpinner: React.FC = () => {
     { name: 'Option D', color: '#FDCB6E' }
   ];
 
-  const spinWheel =async () => {
+  const spinWheel = async () => {
     if (spinning) return;
     const auth_token = localStorage.getItem("okto_auth_token");
     setSpinning(true);
@@ -47,15 +47,16 @@ const WheelSpinner: React.FC = () => {
       }
       setSpinning(false);
       setResult(options[randomIndex]);
-       
-      
+
+
     }, 4000);
     const response = await axios.post(
-			"http://localhost:3000/okto-sandbox/join-room",
-			{
-				auth_token: auth_token,
-			}
-		);
+      "http://localhost:3000/okto-sandbox/join-room",
+      {
+        auth_token: auth_token,
+      }
+    );
+    console.log(response);
   };
 
   return (
