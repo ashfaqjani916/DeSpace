@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AgoraUIKit from 'agora-react-uikit';
 import BallGame from './area/ChatComponent';
 import Home from './pages/Home';
-import Login from './pages/Login'; // Import the Login component
+import LandingPage from './pages/LandingPage';
 
 const App = () => {
   const rtcProps = {
@@ -28,31 +28,31 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <Routes>
-        {/* Login Route */}
-        <Route path="/" element={<Login />} />
-        {/* Home Route */}
-        <Route
-          path="/home"
-          element={
-            <div className="flex justify-center items-center">
-              <div className="grid grid-cols-5 w-full">
-                <div className="col-span-1">
-                  <AgoraUIKit styleProps={styleProps} rtcProps={rtcProps} />
-                </div>
+		<Router>
+			<Routes>
+				{/* Login Route */}
+				<Route path='/' element={<LandingPage />} />
+				{/* Home Route */}
+				<Route
+					path='/home'
+					element={
+						<div className='flex justify-center items-center'>
+							<div className='grid grid-cols-5 w-full'>
+								<div className='col-span-1'>
+									<AgoraUIKit styleProps={styleProps} rtcProps={rtcProps} />
+								</div>
 
-                <div className="col-span-4">
-                  <BallGame />
-                  <Home />
-                </div>
-              </div>
-            </div>
-          }
-        />
-      </Routes>
-    </Router>
-  );
+								<div className='col-span-4'>
+									<BallGame />
+									<Home />
+								</div>
+							</div>
+						</div>
+					}
+				/>
+			</Routes>
+		</Router>
+	);
 };
 
 export default App;
