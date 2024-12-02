@@ -37,23 +37,22 @@ const App = () => {
         <Route
           path="/home"
           element={
-            <div className="relative flex justify-center items-center w-full min-h-screen bg-[url('/floor-tile.png')] bg-repeat bg-auto">
+            <div className="relative flex flex-col justify-center  items-center w-full min-h-screen bg-black">
               {/* Black Mask Overlay */}
               <div className="absolute inset-0 bg-black opacity-50"></div>
-
-              <div className="grid grid-cols-5 w-full relative">
+              <img src='/unfold24-logo3.png' className='h-20 top-7 absolute z-50' />
+              <div className="grid grid-cols-5 w-full relative pt-20">
                 <div className="col-span-1">
                   <VideoCall />
                 </div>
 
                 <div className="col-span-4">
+
                   <BallGame />
-                  <Home />
+
                 </div>
               </div>
             </div>
-
-
 
           }
         />

@@ -375,7 +375,7 @@ const BallGame: React.FC = () => {
       const ctx = canvas.getContext("2d");
       if (ctx) {
         const background = new Image();
-        background.src = "/images/unfold24.jpg";
+        background.src = "/images/unfold24.png";
         background.onload = () => {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
@@ -416,18 +416,39 @@ const BallGame: React.FC = () => {
       <SpinWheelToggle isOpen={showSpinWheel} toggleModal={setShowSpinWheel} />
 
       <div style={{ flexGrow: 1, textAlign: "center", backgroundColor: "transparent" }}>
-        <canvas
-          ref={canvasRef}
-          width={800}
-          height={700}
+        <div
           style={{
-            border: "1px solid black",
+            width: "800px",
+            height: "700px",
+            // backgroundImage: "url('/floor-tile-2.jpeg')", // Add your image URL here
+            backgroundSize: "cover", // Ensures the image covers the div
+            backgroundPosition: "center", // Centers the image within the div
+            border: "1px solid black", // Optional border for the container
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             margin: "20px auto",
-            display: "block",
-            backgroundColor: "transparent", // Make the canvas background transparent
+            position: "relative",
           }}
-        ></canvas>
-        <div style={{ color: "#fff" }}>Move the ball with arrow keys or WSAD keys!</div> {/* Make text more visible on dark backgrounds */}
+        >
+          <canvas
+            ref={canvasRef}
+            width={800}
+            height={700}
+            style={{
+              backgroundColor: "transparent", // Canvas background is transparent
+              display: "block",
+            }}
+          ></canvas>
+        </div>
+        {/* Make text more visible on dark backgrounds */}
+      </div>
+
+      <div className="ml-16 pl-8 absolute bottom-0  left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-32">
+        <img src="/OktoLogo.png" className="h-20" alt="Logo 1" />
+        <img src="/CoinDCX-Logo.png" className="h-12" alt="Logo 2" />
+        <img src="/sui-sui-logo.png" className="h-12" alt="Logo 3" />
+        <img src="/aptos.jpg" className="h-20" alt="Logo 4" />
       </div>
 
       <div
