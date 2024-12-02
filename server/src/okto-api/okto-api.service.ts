@@ -55,7 +55,7 @@ export class OktoApiService {
       //@ts-ignore
       const email = details.data.email;
       console.log(details);
-      const user = this.createPerson(auth_token, email);
+      // const user = this.createPerson(auth_token, email);
       return response.data;
     } catch (error) {
       console.error('Error during authentication:', error.response?.data || error.message);

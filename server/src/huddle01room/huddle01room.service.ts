@@ -21,7 +21,7 @@ export class Huddle01roomService {
           },
         }
       );
-      await this.oktoService.createMeeting(auth_token);
+      //  await this.oktoService.createMeeting(auth_token);
       return response.data;
     } catch (error) {
       console.error(
