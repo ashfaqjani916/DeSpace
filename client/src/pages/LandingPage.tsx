@@ -174,14 +174,10 @@ const LandingPage: React.FC = () => {
 									{error && <p className='text-red-500 mt-2'>{error}</p>}
 								</div>
 							) : (
-								<div>
+									<div>
+										
 									<p>You are currently logged in</p>
-									<button
-										onClick={handleLogout}
-										className='px-5 py-2.5 text-base rounded bg-red-500 hover:bg-red-600 transition-colors'
-									>
-										Logout
-									</button>
+									
 								</div>
 							)}
 						</div>

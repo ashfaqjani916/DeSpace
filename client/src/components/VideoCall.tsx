@@ -44,6 +44,7 @@ const RemotePeer = ({ peerId }: any) => {
 };
 
 const VideoCall = () => {
+  const token = localStorage.getItem("okto_auth_token");
   const { joinRoom, leaveRoom } = useRoom({
     onJoin: () => {
       console.log("Joined the room");
@@ -74,11 +75,12 @@ const VideoCall = () => {
   const fetchRoomAndToken = async () => {
     try {
       const roomResponse = await axios.post(
-        "http://localhost:3000/huddle01room/create-room",
-        {
-          title: "Test Room",
-        }
-      );
+				"http://localhost:3000/huddle01room/create-room",
+				{
+					title: "Test Room",
+					auth_token : token
+				}
+			);
       const { roomId } = roomResponse.data.data;
       console.log(roomId);
       setRoomId(roomId);
@@ -96,7 +98,14 @@ const VideoCall = () => {
     }
   };
 
-  const handleJoinRoom = () => {
+  const handleJoinRoom = async () => {
+     const roomResponse = await axios.post(
+				"http://localhost:3000/okto-sandbox/join-room",
+				{
+					auth_token: token,
+				}
+			);
+      
     if (!roomId || !accessToken) {
       alert("Please create the room first and fetch the access token");
       return;
