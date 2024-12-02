@@ -37,8 +37,11 @@ const App = () => {
         <Route
           path="/home"
           element={
-            <div className="flex justify-center items-center">
-              <div className="grid grid-cols-5 w-full">
+            <div className="relative flex justify-center items-center w-full min-h-screen bg-[url('/floor-tile.png')] bg-repeat bg-auto">
+              {/* Black Mask Overlay */}
+              <div className="absolute inset-0 bg-black opacity-50"></div>
+
+              <div className="grid grid-cols-5 w-full relative">
                 <div className="col-span-1">
                   <VideoCall />
                 </div>
@@ -49,6 +52,9 @@ const App = () => {
                 </div>
               </div>
             </div>
+
+
+
           }
         />
       </Routes>

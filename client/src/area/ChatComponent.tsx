@@ -217,6 +217,7 @@
 
 
 import SpinnerModal from "@/components/SpinningWheel";
+import SpinWheelToggle from "@/components/SpinWheelToggle";
 import React, { useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -230,6 +231,7 @@ const BallGame: React.FC = () => {
   const socketRef = useRef<Socket | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [ballPosition, setBallPosition] = useState({ x: 200, y: 200 });
+  const [showSpinWheel, setShowSpinWheel] = useState(false);
   const [balls, setBalls] = useState<Ball[]>([]);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -318,7 +320,7 @@ const BallGame: React.FC = () => {
           // Check if collision is with a popup-triggering obstacle
           for (const popupObstacle of popUpTriggerObstacle) {
             if (isColliding(ballRect, popupObstacle)) {
-              alert("Collision detected with a special obstacle!");
+              setShowSpinWheel(true);
             }
           }
           return prevPos; // Stop movement
@@ -410,17 +412,34 @@ const BallGame: React.FC = () => {
   }, [balls]);
 
   return (
-    <div className="ball-game" style={{ display: "flex" }}>
-      <SpinnerModal />
+    <div className="ball-game" style={{ display: "flex", backgroundColor: "transparent" }}>
+      <SpinWheelToggle isOpen={showSpinWheel} toggleModal={setShowSpinWheel} />
+
+      <div style={{ flexGrow: 1, textAlign: "center", backgroundColor: "transparent" }}>
+        <canvas
+          ref={canvasRef}
+          width={800}
+          height={700}
+          style={{
+            border: "1px solid black",
+            margin: "20px auto",
+            display: "block",
+            backgroundColor: "transparent", // Make the canvas background transparent
+          }}
+        ></canvas>
+        <div style={{ color: "#fff" }}>Move the ball with arrow keys or WSAD keys!</div> {/* Make text more visible on dark backgrounds */}
+      </div>
+
       <div
         style={{
           width: "200px",
           padding: "10px",
-          backgroundColor: "#f4f4f4",
+          backgroundColor: "transparent", // Transparent background for user list container
           borderRight: "1px solid #ccc",
+          color: "#fff", // Make text white for visibility on dark background
         }}
       >
-        <h3>Joined Users</h3>
+        <h3 style={{ color: "#fff" }}>Joined Users</h3>
         {balls.map((ball) => (
           <div key={ball.id} style={{ margin: "10px 0", display: "flex", alignItems: "center" }}>
             <div
@@ -441,24 +460,17 @@ const BallGame: React.FC = () => {
           placeholder="Enter image URL"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
-          style={{ width: "100%", marginTop: "10px" }}
+          style={{
+            width: "100%",
+            marginTop: "10px",
+            backgroundColor: "transparent", // Transparent background for input
+            color: "#fff", // Make input text white
+            border: "1px solid #ccc", // Keep border for visibility
+          }}
         />
       </div>
-
-      <div style={{ flexGrow: 1, textAlign: "center" }}>
-        <canvas
-          ref={canvasRef}
-          width={800}
-          height={700}
-          style={{
-            border: "1px solid black",
-            margin: "20px auto",
-            display: "block",
-          }}
-        ></canvas>
-        <div>Move the ball with arrow keys or WSAD keys!</div>
-      </div>
     </div>
+
   );
 };
 
