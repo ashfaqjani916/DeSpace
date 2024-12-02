@@ -9,15 +9,18 @@ import { OktoApiModule } from './okto-api/okto-api.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PersonService } from './persons/persons.service';
 import { PersonModule } from './persons/persons.module';
+import { Huddle01roomModule } from './huddle01room/huddle01room.module';
+import { Huddle01roomService } from './huddle01room/huddle01room.service';
+import { Huddle01roomController } from './huddle01room/huddle01room.controller';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb+srv://rishidha04:CUqLIc34NGNqvr5i@cluster0.8edre.mongodb.net/', {
 
     }),
-    ChatModule, SignalingModule, OktoApiModule, PersonModule],
-  controllers: [AppController],
-  providers: [AppService, MediasoupService, MediasoupGateway, PersonService],
+    ChatModule, SignalingModule, OktoApiModule, PersonModule, Huddle01roomModule],
+  controllers: [AppController, Huddle01roomController],
+  providers: [AppService, MediasoupService, MediasoupGateway, PersonService, Huddle01roomService],
 })
 export class AppModule { }
 

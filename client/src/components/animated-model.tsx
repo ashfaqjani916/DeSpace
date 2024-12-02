@@ -38,12 +38,14 @@ export function Modal({ children }: { children: ReactNode }) {
   return <ModalProvider>{children}</ModalProvider>;
 }
 
-export const ModalTrigger = ({
-  children,
-  className,
-}: {
+interface ModalTriggerProps {
   children: ReactNode;
   className?: string;
+}
+
+export const ModalTrigger: React.FC<ModalTriggerProps> = ({
+  children,
+  className,
 }) => {
   const { setOpen } = useModal();
   return (
@@ -59,12 +61,16 @@ export const ModalTrigger = ({
   );
 };
 
-export const ModalBody = ({
-  className,
-}: {
+interface ModalBodyProps {
+  children?: ReactNode;
   className?: string;
+}
+
+export const ModalBody: React.FC<ModalBodyProps> = ({
+  children,
+  className,
 }) => {
-  const { open } = useModal();
+  const { open, setOpen } = useModal();
 
   useEffect(() => {
     if (open) {
@@ -75,7 +81,6 @@ export const ModalBody = ({
   }, [open]);
 
   const modalRef = useRef(null);
-  const { setOpen } = useModal();
   useOutsideClick(modalRef, () => setOpen(false));
 
   return (
@@ -93,7 +98,7 @@ export const ModalBody = ({
             opacity: 0,
             backdropFilter: "blur(0px)",
           }}
-          className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full  flex items-center justify-center z-50"
+          className="fixed [perspective:800px] [transform-style:preserve-3d] inset-0 h-full w-full flex items-center justify-center z-50"
         >
           <Overlay />
 
@@ -126,12 +131,7 @@ export const ModalBody = ({
               damping: 15,
             }}
           >
-            <button
-              onClick={() => setOpen(false)}
-              className="px-4 py-2 rounded-md text-black dark:text-white text-center relative overflow-hidden"
-            >
-              Close
-            </button>
+            {children}
           </motion.div>
         </motion.div>
       )}
@@ -158,15 +158,12 @@ const Overlay = ({ className }: { className?: string }) => {
   );
 };
 
-// Hook to detect clicks outside of a component.
-// Add it in a separate file, I've added here for simplicity
 export const useOutsideClick = (
   ref: React.RefObject<HTMLDivElement>,
   callback: Function
 ) => {
   useEffect(() => {
     const listener = (event: any) => {
-      // DO NOTHING if the element being clicked is the target element or their children
       if (!ref.current || ref.current.contains(event.target)) {
         return;
       }
