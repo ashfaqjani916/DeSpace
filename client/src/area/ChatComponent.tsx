@@ -5,7 +5,6 @@ import SpinWheelToggle from "@/components/SpinWheelToggle";
 import React, { useEffect, useState, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 
-const [isNear, setIsNear] = useState(false);
 
 
 
@@ -24,6 +23,10 @@ const BallGame: React.FC = () => {
   const [showSpinWheel, setShowSpinWheel] = useState(false);
   const [balls, setBalls] = useState<Ball[]>([]);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [isNear, setIsNear] = useState(false);
+
+  console.log(isNear);
+
 
   const toggleProximityState = () => {
     if (!socketRef.current) return;
