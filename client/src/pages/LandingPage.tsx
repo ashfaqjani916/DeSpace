@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Menu } from "lucide-react";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { FlipWords } from "@/components/ui/flip-words";
@@ -7,13 +7,13 @@ import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 
 // Types
-interface GoogleCredentialResponse {
-	credential: string;
-}
+// interface GoogleCredentialResponse {
+// 	credential: string;
+// }
 
-interface AuthResponse {
-	auth_token: string;
-}
+// interface AuthResponse {
+// 	auth_token: string;
+// }
 
 function CardHoverEffectDemo() {
 	return (
@@ -112,6 +112,7 @@ const LandingPage: React.FC = () => {
 			const data: any = await response.json();
 
 
+
 			if (data.data.auth_token) {
 				console.log("Authentication successful");
 				setAuthToken(data.data.auth_token);
@@ -139,9 +140,9 @@ const LandingPage: React.FC = () => {
 				<nav className='container mx-auto px-4 py-2 flex items-center justify-between'>
 					<div className='flex items-center gap-2'>
 						<img
-							src='/LOGO.png'
-							alt='Huddle Logo'
-							className='h-40 W-40 w-auto'
+							src='/logo.png'
+							alt='DeSpace Logo'
+							className='h-48 W-48 w-auto'
 						/>
 					</div>
 
@@ -200,11 +201,11 @@ const LandingPage: React.FC = () => {
 						}}
 					></div> */}
 					<h1 className='text-4xl md:text-9xl font-bold mb-6 leading-tight'>
-						DE-SPACE
+						DeSpace
 						<br />
 					</h1>
 					<div className='flex justify-center items-center px-4 mb-8'>
-						<div className='text-4xl mx-auto font-normal text-neutral-600 text-gray-500'>
+						<div className='text-4xl mx-auto font-normal text-neutral-600 '>
 							Where
 							<FlipWords words={words} />
 							meets Decentralization
@@ -218,6 +219,53 @@ const LandingPage: React.FC = () => {
 					</div>
 				</main>
 
+				<section className='w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]'>
+					<ul className='flex items-center justify-center md:justify-start mx-auto gap-8 animate-infinite-scroll'>
+						<li>
+							<img
+								src='/OktoLogo.png'
+								alt='Facebook'
+								className='w-24'
+							/>
+						</li>
+						<li>
+							<img
+								src='/aptos-logo.png'
+								alt='Disney'
+								className='h-32'
+							/>
+						</li>
+						<li>
+							<img
+								src='/CoinDCX-Logo.png'
+								alt='Airbnb'
+								className='w-32'
+							/>
+						</li><li>
+							<img
+								src='/unfold-nobg.png'
+								alt='Spark'
+								className='h-24'
+							/>
+						</li>
+						<li>
+							<img
+								src='/sui-sui-logo.png'
+								alt='Apple'
+								className='h-16'
+							/>
+						</li>
+
+						<li>
+							<img
+								src='/huddle.png'
+								alt='Samsung'
+								className='h-24'
+							/>
+						</li>
+
+					</ul>
+				</section>
 			</div>
 
 			<div className='min-h-screen bg-black'>
