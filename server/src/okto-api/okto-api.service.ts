@@ -271,7 +271,7 @@ export class OktoApiService {
     }
   }
 
-  async joinMeeting(auth_token: string, meeting_id: string): Promise<any> {
+  async joinMeeting(auth_token: string, meeting_id: number): Promise<any> {
     try {
       const persons = await this.getPersonDetails(auth_token);
       const APTOS_WALLET_ADDRESS = await this.getWalletAddress(auth_token);
@@ -288,7 +288,6 @@ export class OktoApiService {
         throw new Error("Creator ID not found for the wallet address.");
       }
 
-      const currentDate = new Date().toISOString();
 
       const transactions = {
         transactions: [

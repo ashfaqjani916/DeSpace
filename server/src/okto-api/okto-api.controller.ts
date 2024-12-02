@@ -103,4 +103,32 @@ export class OktoApiController {
       return { error: error.message };
     }
   }
+
+  @Post('/join-meeting')
+  async joinMeeting(@Body('auth_token') authToken: string): Promise<any> {
+    if (!authToken) {
+      return { error: 'auth_token is required' };
+    }
+
+    try {
+      const response = await this.oktoApiService.joinMeeting(authToken, 1);
+      return response;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+
+  @Post('/spin-wheel')
+  async spingWheel(@Body('auth_token') authToken: string, @Body('rank') rank: number): Promise<any> {
+    if (!authToken) {
+      return { error: 'auth_token is required' };
+    }
+
+    try {
+      const response = await this.oktoApiService.playSpinWheel(authToken, 'oktos', rank);
+      return response;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
 }
